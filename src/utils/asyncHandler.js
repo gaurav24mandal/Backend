@@ -1,6 +1,9 @@
 const asyncHandler = (requestrHandler)=>async(req , res , next)=>{
        try {
-           await   requestrHandler(req, res , next)
+           console.log("I am here");
+          return  await   requestrHandler(req, res , next)
+         
+          
        } catch (error) {
          res.status(err.code || 500).json({
             success : false,
