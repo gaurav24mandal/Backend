@@ -22,7 +22,7 @@ app.use((req, res, next) => {
   });
 console.log('hi router');
 
-app.use("/api/v1/users", userRouter)
+app.use("/api/v1/user", userRouter)
 app.get("/",(req,res)=>{
      res.send("hi")
      console.log('ko');

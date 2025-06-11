@@ -6,6 +6,7 @@ import {fileUpload} from "../utils/cloudinary.js"
 import jwt from 'jsonwebtoken'
 
 const registerUser = asyncHandler(async(req , res )=>{
+  
      // get user details from frontend
     // validation - not empty
     // check if user already exists: username, email
@@ -222,5 +223,28 @@ const refreshAccessToken = asyncHandler(async(req, res)=>{
       )
 })
 
+const updatePassword = asyncHandler(async(req, res)=>{
+      const {oldPassword, newPassword} = req.body;
+       
+      const user = await User.findById(req.user._id);
+      
+      
+      if(!user){
+        throw new ApiError(401, 'unauthorized attempt notuser ')
+      }
+      const isPasswordCorrect = await user.isPasswordCorrect(oldPassword);
+
+       if(!isPasswordCorrect){
+        throw new ApiError(401, 'old is not correct')
+       }
+       user.password = newPassword;
+        await user.save({validateBeforeSave : false})
+
+        return res
+        .status(200)
+        .json(new ApiResponse(200,{},"password changed successfully"))
+
+})
+
    
-export  {registerUser , loginUser, refreshAccessToken , logout}
+export  {registerUser , loginUser, refreshAccessToken , logout ,updatePassword}
